@@ -20,7 +20,7 @@ public class UsersAPI {
 
     @RequestMapping(value= "/addUser", method = RequestMethod.POST)
     public void addUser(@RequestBody String userString) {
-        System.out.println("In adduser request");
+        System.out.println("In /addUser request");
         JSONObject userObject = new JSONObject (userString);
         String username, password, email;
         username = (String) userObject.get("username");
@@ -33,7 +33,7 @@ public class UsersAPI {
                 .append("email", email);
         usersCollection.insertOne(doc);
 
-        System.out.println("Inserted User in dbwith");
+        System.out.println("Inserted User in db with");
         System.out.println("username: " + username);
         System.out.println("password: " + password);
         System.out.println("email: " + email);
