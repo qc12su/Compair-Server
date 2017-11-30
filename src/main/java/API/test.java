@@ -1,7 +1,10 @@
 package API;
 
 import API.Connection;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 
 public class test {
