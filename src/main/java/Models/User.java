@@ -1,4 +1,4 @@
-package API;
+package Models;
 
 public class User {
     private String username, password, email;
