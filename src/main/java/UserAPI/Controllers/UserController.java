@@ -1,49 +1,37 @@
-package RestAPI.Controllers;
+package UserAPI.Controllers;
 
-import Models.User;
-import RestAPI.Repositories.UserRepository;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
-import org.json.JSONObject;
+import UserAPI.Repositories.Interfaces.IUserRepository;
+import UserAPI.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.mongodb.client.model.Filters.eq;
 
 @RestController
 public class UserController {
     @Autowired
-    UserRepository userRepository;
+    IUserRepository userRepository;
 
-    @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "userAPI/getUsers", method = RequestMethod.GET)
     public Iterable<User> getUsers() {
         return userRepository.findAll();
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/getUser/{userId}", method = RequestMethod.GET)
-    public User getUser(@PathVariable long userId) {
-        System.out.println("In getUser");
-        return userRepository.findOne(userId);
-        /*
-        System.out.println("In get user");
-        MongoCollection usersCollection = connection.database.getCollection("users");
-        FindIterable<Document> findIterable = usersCollection.find(eq("userid", "1"));
-        for (Document document : findIterable) {
-            System.out.println(document.toJson());
-            return document.toJson();
-        }
-        return "";
-        */
+    @RequestMapping(value = "userAPI/getUser/{userName}", method = RequestMethod.GET)
+    public User getUser(@PathVariable String userName) {
+        return userRepository.find(userName);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    @RequestMapping(value = "userAPI/createUser", method = RequestMethod.POST)
     public ResponseEntity addUser(@RequestBody User user) {
-         userRepository.save(user);
+         if (user == null || !user.isValid()){
+             return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
+         }
+
+         userRepository.create(user);
          return ResponseEntity.ok(HttpStatus.OK);
     }
 

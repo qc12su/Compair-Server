@@ -1,4 +1,4 @@
-package API;
+/*package API;
 
 import com.mongodb.Block;
 import com.mongodb.client.FindIterable;
@@ -58,4 +58,4 @@ public class UsersAPI {
         usersCollection.insertOne(newUserDoc);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-}
+}*/
