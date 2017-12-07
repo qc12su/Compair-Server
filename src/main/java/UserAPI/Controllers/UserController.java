@@ -13,19 +13,19 @@ public class UserController {
     @Autowired
     IUserRepository userRepository;
 
-    @RequestMapping(value = "userAPI/getUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "userAPI/users", method = RequestMethod.GET)
     public Iterable<User> getUsers() {
         return userRepository.findAll();
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "userAPI/getUser/{userName}", method = RequestMethod.GET)
+    @RequestMapping(value = "userAPI/users/{userName}", method = RequestMethod.GET)
     public User getUser(@PathVariable String userName) {
         return userRepository.find(userName);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "userAPI/createUser", method = RequestMethod.POST)
+    @RequestMapping(value = "userAPI/users", method = RequestMethod.POST)
     public ResponseEntity addUser(@RequestBody User user) {
          if (user == null || !user.isValid()){
              return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);

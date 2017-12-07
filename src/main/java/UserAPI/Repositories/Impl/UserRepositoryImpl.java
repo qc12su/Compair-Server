@@ -1,20 +1,14 @@
 package UserAPI.Repositories.Impl;
 
-import java.util.List;
-
 import UserAPI.Config.MongoDB;
 import UserAPI.Entities.User;
-import UserAPI.Connection;
 import UserAPI.Repositories.Interfaces.IUserRepository;
 import com.mongodb.WriteResult;
-import com.mongodb.client.MongoCollection;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
-import org.mongodb.morphia.query.Query;
 import org.springframework.stereotype.Repository;
 
 import static com.mongodb.client.model.Filters.eq;
-import java.util.ArrayList;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository {
