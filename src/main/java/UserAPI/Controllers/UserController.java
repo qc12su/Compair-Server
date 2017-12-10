@@ -2,6 +2,8 @@ package UserAPI.Controllers;
 
 import UserAPI.Repositories.Interfaces.IUserRepository;
 import UserAPI.Entities.User;
+import org.json.HTTP;
+import org.mongodb.morphia.Key;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +32,18 @@ public class UserController {
          if (user == null || !user.isValid()){
              return ResponseEntity.badRequest().body(HttpStatus.BAD_REQUEST);
          }
-
-         userRepository.create(user);
-         return ResponseEntity.ok(HttpStatus.OK);
+        int createUserResponse = userRepository.create(user);
+        if (createUserResponse== 1) {
+            return ResponseEntity
+                    .status(HttpStatus.ALREADY_REPORTED) // HTTP status 208
+                    .body("Username taken");
+        } else if (createUserResponse == 2) {
+            return ResponseEntity
+                    .status(HttpStatus.IM_USED) // HTTP status 226
+                    .body("Email taken");
+        } else {
+             return ResponseEntity.ok(HttpStatus.OK);
+         }
     }
 
    /* @RequestMapping(value = "/addUser", method = RequestMethod.POST)

@@ -6,6 +6,7 @@ import UserAPI.Repositories.Interfaces.IUserRepository;
 import com.mongodb.WriteResult;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
+import org.mongodb.morphia.query.Query;
 import org.springframework.stereotype.Repository;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -14,8 +15,12 @@ import static com.mongodb.client.model.Filters.eq;
 public class UserRepositoryImpl implements IUserRepository {
     Datastore ds = MongoDB.getDatastore();
 
-    public Key<User> create(User user){
-        return ds.save(user);
+    public int create(User user){
+        int validUserResponse = validUser(user);
+        if (validUserResponse == 0){
+            ds.save(user);
+        }
+        return validUserResponse;
     }
 
     public Iterable<User> findAll(){
@@ -26,7 +31,31 @@ public class UserRepositoryImpl implements IUserRepository {
         return ds.get(User.class, username);
     }
 
+
+    public int validUser(User user){
+        Query<User> usernameQuery = ds.createQuery(User.class)
+                .field("username").equal(user.getUsername());
+        Query<User> emailQuery = ds.createQuery(User.class)
+                .field("email").equal(user.getEmail());
+        System.out.println("Validating user");
+        if (usernameQuery.get() != null){
+            //System.out.println(usernameQuery.get());
+            System.out.println("Duplicate username found");
+            return 1;
+        }
+        if (emailQuery.get() != null) {
+            //System.out.println(emailQuery.get());
+            System.out.println("Duplicate email found");
+            return 2;
+        }
+        return 0;
+        //System.out.print(username);
+        //System.out.print(ds.get(User.class, username));
+    }
+
     public boolean exists(String username){
+        //System.out.print(username);
+        //System.out.print(ds.get(User.class, username));
         return ds.get(User.class, username) != null;
     }
 

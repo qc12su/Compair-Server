@@ -9,7 +9,7 @@ public interface IUserRepository {
 
     Iterable<User> findAll();
 
-    Key<User> create(User entity);
+    int create(User entity);
 
     boolean exists(String userName);
 
